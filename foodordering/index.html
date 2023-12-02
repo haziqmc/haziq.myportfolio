@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Ordering System</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    background-image: url(food.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: white;
+    max-width: 700px; /* Set a maximum width for better readability on larger screens */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+}
+
+#menu-container h3 {
+    text-align: center;
+    padding: 20px;
+}
+
+.menu-item {
+    margin: 10px;
+}
+
+#order-container {
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: red;
+    color: white;
+    width: 80%; /* Take up the full width of the container */
+    text-align: center;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+button {
+    width: 100%; /* Make the button take up the full width */
+    height: 40px; /* Increase height for better touch interaction on mobile devices */
+    font-size: 18px; /* Increase font size for better readability */
+    margin-top: 10px; /* Add some top margin */
+}
+
+button:hover {
+    background-color: green;
+    cursor: pointer;
+}
+
+@media screen and (min-width: 600px) {
+    button {
+        width: auto; /* Reset width to default on larger screens */
+    }
+}
+
+
+@media screen and (min-width: 600px) {
+    #menu-container {
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <h2 style="color: white; font-size: 40px; font-weight: 500;">Food Ordering System</h2>
+
+    <div id="menu-container">
+        <h3>Menu</h3>
+        <br>
+        <div class="menu-item">
+            <label>
+                <input type="checkbox" class="menu-checkbox" value="Burger"> Burger - RM5
+            </label>
+            <input type="number" class="quantity-input" min="0" placeholder="Quantity">
+        </div>
+        <div class="menu-item">
+            <label>
+                <input type="checkbox" class="menu-checkbox" value="Pizza"> Pizza - RM8
+            </label>
+            <input type="number" class="quantity-input" min="0" placeholder="Quantity">
+        </div>
+        <div class="menu-item">
+            <label>
+                <input type="checkbox" class="menu-checkbox" value="Salad"> Salad - RM4
+            </label>
+            <input type="number" class="quantity-input" min="0" placeholder="Quantity">
+        </div>
+    </div>
+
+    <button onclick="placeOrder()">Place Order</button>
+    <br>
+    <div id="order-container">
+        <h3>Your Order</h3>
+        <ul id="order-list"></ul>
+        <p>Total: RM<span id="total-price">0</span></p>
+    </div>
+
+    <script>
+        function placeOrder() {
+            const menuItems = document.querySelectorAll('.menu-checkbox');
+            const quantityInputs = document.querySelectorAll('.quantity-input');
+            const orderList = document.getElementById('order-list');
+            const totalPriceElement = document.getElementById('total-price');
+
+            orderList.innerHTML = '';
+            let totalPrice = 0;
+
+            for (let i = 0; i < menuItems.length; i++) {
+                if (menuItems[i].checked && quantityInputs[i].value > 0) {
+                    const itemName = menuItems[i].value;
+                    const quantity = parseInt(quantityInputs[i].value);
+                    const itemPrice = getItemPrice(itemName);
+                    const itemTotalPrice = quantity * itemPrice;
+
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${quantity} x ${itemName} - $${itemTotalPrice}`;
+                    orderList.appendChild(listItem);
+
+                    totalPrice += itemTotalPrice;
+                }
+            }
+
+            totalPriceElement.textContent = totalPrice;
+        }
+
+        function getItemPrice(itemName) {
+            // Add more items and prices as needed
+            const menu = {
+                'Burger': 5,
+                'Pizza': 8,
+                'Salad': 4
+            };
+
+            return menu[itemName] || 0;
+        }
+    </script>
+</body>
+</html>

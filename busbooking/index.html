@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Booking System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+            background-image: url(bus.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        #date-time-container {
+            margin-bottom: 20px;
+        }
+
+        .seat {
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+            background-color: #b2b2b2;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .booked {
+            background-color: #ff6666;
+            cursor: not-allowed;
+        }
+
+        @media only screen and (max-width: 600px) {
+            /* Adjust styles for small screens */
+            body {
+                margin: 10px;
+            }
+
+            .seat {
+                width: 30px;
+                height: 30px;
+                margin: 3px;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Bus Booking System</h2>
+
+    <div id="date-time-container">
+        <label for="booking-date">Select Date:</label>
+        <input type="date" id="booking-date">
+
+        <label for="booking-time">Select Time:</label>
+        <input type="time" id="booking-time">
+    </div>
+
+    <div id="bus-container"></div>
+    <button onclick="bookSeat()">Book Selected Seat</button>
+
+    <script>
+        const totalSeats = 30;
+        const busContainer = document.getElementById('bus-container');
+        const bookingDateInput = document.getElementById('booking-date');
+        const bookingTimeInput = document.getElementById('booking-time');
+
+        // Create seats on the bus
+        for (let seatNumber = 1; seatNumber <= totalSeats; seatNumber++) {
+            const seat = document.createElement('div');
+            seat.className = 'seat';
+            seat.id = `seat-${seatNumber}`;
+            seat.innerText = seatNumber;
+            seat.addEventListener('click', () => selectSeat(seatNumber));
+            busContainer.appendChild(seat);
+        }
+
+        let selectedSeats = [];
+
+        function selectSeat(seatNumber) {
+            const seat = document.getElementById(`seat-${seatNumber}`);
+            if (!selectedSeats.includes(seatNumber)) {
+                selectedSeats.push(seatNumber);
+                seat.style.backgroundColor = '#66cc66'; // Change color to indicate selection
+            } else {
+                selectedSeats = selectedSeats.filter(seat => seat !== seatNumber);
+                seat.style.backgroundColor = ''; // Reset color
+            }
+        }
+
+        function bookSeat() {
+            const date = bookingDateInput.value;
+            const time = bookingTimeInput.value;
+
+            if (!date || !time) {
+                alert("Please select both date and time before booking.");
+                return;
+            }
+
+            selectedSeats.forEach(seatNumber => {
+                const seat = document.getElementById(`seat-${seatNumber}`);
+                if (!seat.classList.contains('booked')) {
+                    seat.classList.add('booked');
+                    seat.style.backgroundColor = '#ff6666'; // Change color to indicate booking
+                    // You can add additional logic to store the booking information (date, time, seat number) here.
+                }
+            });
+            selectedSeats = [];
+        }
+    </script>
+</body>
+</html>
